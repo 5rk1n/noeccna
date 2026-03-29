@@ -1,0 +1,224 @@
+66.254.0.0
+89.222.0.0
+104.18.0.0
+208.77.0.0
+
+
+
+
+config t
+NO ip access-list standard NOPORN
+ip access-list standard NOPORN
+DENY 66.254.0.0 0.0.255.255
+DENY 89.222.0.0 0.0.255.255
+DENY 104.18.0.0 0.0.255.255
+DENY 208.77.0.0 0.0.255.255
+Permit Any
+Int Gi 1
+ ip access-group NOPORN in
+end
+
+
+
+Goberno: allow all Porn, for freedom of expression!
+config t
+Int gi 1
+ NO ip access-group NOPORN in
+end
+
+
+Alternative: Numbered Standard ACL
+
+config t
+no access-list 25
+access-list 25 DENY 66.254.0.0 0.0.255.255
+access-list 25 DENY 89.222.0.0 0.0.255.255
+access-list 25 DENY 104.18.0.0 0.0.255.255
+access-list 25 DENY 208.77.0.0 0.0.255.255
+access-list 25 permit Any
+Int gi 1
+ ip access-group 25 in
+end
+
+
+config t
+Int gi 1
+ NO ip access-group 25 in
+end
+
+
+
+NOISKUL
+184.168.0.0
+104.20.0.0
+50.6.0.0
+136.158
+
+
+
+
+config t
+NO ip access-list standard NOISKUL
+ip access-list standard NOISKUL
+DENY 184.168.0.0 0.0.255.255
+DENY 104.20.0.0 0.0.255.255
+DENY 50.6.0.0 0.0.255.255
+DENY 136.158.0.0 0.0.255.255
+Permit Any
+Int Gi 1
+ ip access-group NOISKUL in
+end
+
+
+
+config t
+Int gi 1
+ NO ip access-group NOISKUL in
+end
+
+
+=========
+NOHUGGERS
+
+142.251.0.0
+162.159.0.0
+15.197.0.0
+186.2.0.0
+44.242.0.0
+
+config t
+no access-list 88
+access-list 88 DENY 142.251.0.0 0.0.255.255
+access-list 88 DENY 162.159.0.0 0.0.255.255
+access-list 88 DENY 15.197.0.0 0.0.255.255
+access-list 88 DENY 186.2.0.0 0.0.255.255
+access-list 88 DENY 44.242.0.0 0.0.255.255
+access-list 88 permit Any
+Int gi 1
+ ip access-group 88 in
+end
+
+
+
+config t
+Int gi 1
+ NO ip access-group 88 in
+end
+
+
+10.11.0.0
+10.12.0.0
+10.21.0.0
+10.92.0.0
+10.22.0.0
+10.31.0.0
+10.91.0.0
+10.32.0.0
+
+10.41.0.0
+10.42.0.0
+10.51.0.0
+10.61.0.0
+10.62.0.0
+10.71.0.0
+
+
+
+@Edge
+conf t 
+no ip access-list extended NOCLASSMATE1
+ip access-list extended NOCLASSMATE1
+permit ospf any any
+permit ip 10.41.0.0 0.0.255.255 any
+permit ip 10.42.0.0 0.0.255.255 any
+permit ip 10.51.0.0 0.0.255.255 any
+permit ip 10.61.0.0 0.0.255.255 any
+permit ip 10.62.0.0 0.0.255.255 any
+permit ip 10.71.0.0 0.0.255.255 any
+Int g0/0/1
+ ip access-group NOCLASSMATE1 in
+end
+
+
+
+conft 
+ip access-list extended PROTECTME
+deny tcp any host bet10.com eq19
+permit any any
+
+int gi3
+ip access-group PROTECTME in
+end
+
+
+
+ip access-list extended (LIST)
+<action> <protocol> <hacker/source> <victim/destination> eq <port no.>
+
+	TCP = Data
+	UDP = STREAMS
+	ICMP = ping (EQ not applicable)
+	IP = all of the above (HOST and EQ not applicable) 
+
+Access-List reads fom TOP to BOTTOM
+Implicit Auto Deny - by default DENY IP ANY ANY
+
+Finihisng Combo : Apply to corresponding Interface, list, in/out
+
+int <interface>
+	ip access-group <LIST> <IN/OUT>
+
+Common Port nnumbers
+http = 80
+https = 443
+telnet = 23
+ssh = 22
+DNS = 53
+FTP = 20/21
+SMTP = 25
+POP3 110
+IMAP = 143
+NTP = 123
+SCCP = 2000 (Cisco Proprietary Telephony)
+SIP = 5060
+
+
+CREATE a POLICY named POLICY1
+bet10.com allow http, https, ping
+bet11.com SIP and SCCP
+
+
+conf t
+NO ip access-list extended POLICY1
+ip access-list extended POLICY1
+	permit tcp any host bet10.com eq 80
+	permit tcp any host bet10.com eq 443
+	permit icmp any host bet10.com
+	permit tcp any host bet11.com eq 5060
+	permit tcp any host bet11.com eq 2000
+
+int gi3
+	ip access-group POLICY1 in
+	end
+
+
+
+NO ip access-list extended POLICY1
+Create POLICY2
+bet10: ping, http, ftp
+bet11: ping, dns, https, ssh
+
+conf t
+no ip access-list extended POLICY2
+ip access-list extended POLICY2
+	permit icmp any host bet10.com
+	permit tcp any host bet10.com eq 80
+	permit tcp any host bet10.com eq 20
+	permit icmp any host bet11.com
+	permit tcp any host bet11.com eq 53
+	permit tcp any host bet11.com eq 443
+	permit tcp any host bet11.com eq 22
+
+int gi3
+	ip access-group POLICY2 in
+	end
