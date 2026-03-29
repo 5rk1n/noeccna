@@ -229,9 +229,21 @@ int gi3
 	end
 =====
 	
+Common Port nnumbers
+http = 80
+https = 443
+telnet = 23
+ssh = 22
+DNS = 53
+FTP = 20/21
+SMTP = 25
+POP3 110
+IMAP = 143
+NTP = 123
+SCCP = 2000 (Cisco Proprietary Telephony)
+SIP = 5060
 	
-	
-	
+======
 POLICY3
 bet10: ssh, dns
 bet11: https, ssh, SIP
@@ -253,3 +265,7 @@ int gi3
 	no ip access-group POLICY3 in
 	end
 ======
+
+
+
+
