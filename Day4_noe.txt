@@ -222,3 +222,34 @@ ip access-list extended POLICY2
 int gi3
 	ip access-group POLICY2 in
 	end
+=====
+conf t
+int gi3
+	no ip access-group POLICY2 in
+	end
+=====
+	
+	
+	
+	
+POLICY3
+bet10: ssh, dns
+bet11: https, ssh, SIP
+
+conf t
+no ip access-list extended POLICY3
+ip access-list extended POLICY3
+	permit tcp any host bet10.com eq 22
+	permit tcp any host bet10.com eq 53
+	permit tcp any host bet11.com eq 443
+	permit tcp any host bet11.com eq 22
+	permit tcp any host bet11.com eq 5060
+int gi3
+	ip access-group POLICY3 in
+	end
+======
+conf t
+int gi3
+	no ip access-group POLICY3 in
+	end
+======
