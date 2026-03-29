@@ -1,0 +1,63 @@
+!@UTM-PH
+conf t
+ hostname UTM-PH
+ enable secret pass
+ service password-encryption
+ no logging cons
+ no ip domain lookup
+ line vty 0 14
+  transport input all
+  password pass
+  login local
+  exec-timeout 0 0
+ int g1
+  ip add 208.8.8.11 255.255.255.0
+  no shut
+ int g2
+  ip add 192.168.102.11 255.255.255.0
+  no shut
+ int g3
+  ip add 11.11.11.113 255.255.255.224
+  no shut
+ !
+ username admin privilege 15 secret pass
+ ip http server
+ ip http secure-server
+ ip http authentication local
+ end
+wr
+!
+
+
+
+
+!@UTM-JP
+conf t
+ hostname UTM-JP
+ enable secret pass
+ service password-encryption
+ no logging cons
+ no ip domain lookup
+ line vty 0 14
+  transport input all
+  password pass
+  login local 
+  exec-timeout 0 0
+ int g1
+  ip add 208.8.8.12 255.255.255.0
+  no shut
+ int g2
+  ip add 192.168.102.12 255.255.255.0
+  no shut
+ int g3
+  ip add 21.21.21.213 255.255.255.240
+  ip add 22.22.22.223 255.255.255.192 secondary
+  no shut
+ !
+ username admin privilege 15 secret pass
+ ip http server
+ ip http secure-server
+ ip http authentication local
+ end
+wr
+!
