@@ -229,21 +229,9 @@ int gi3
 	end
 =====
 	
-Common Port nnumbers
-http = 80
-https = 443
-telnet = 23
-ssh = 22
-DNS = 53
-FTP = 20/21
-SMTP = 25
-POP3 110
-IMAP = 143
-NTP = 123
-SCCP = 2000 (Cisco Proprietary Telephony)
-SIP = 5060
 	
-======
+	
+	
 POLICY3
 bet10: ssh, dns
 bet11: https, ssh, SIP
@@ -259,13 +247,54 @@ ip access-list extended POLICY3
 int gi3
 	ip access-group POLICY3 in
 	end
+	
+	
 ======
 conf t
 int gi3
 	no ip access-group POLICY3 in
 	end
 ======
+Common Port nnumbers
+http = 80
+https = 443
+telnet = 23
+ssh = 22
+DNS = 53
+FTP = 20/21
+SMTP = 25
+POP3 110
+IMAP = 143
+NTP = 123
+SCCP = 2000 (Cisco Proprietary Telephony)
+SIP = 5060
 
 
 
+There is an employee who access and monitors various resources...
+Create an access list that applies in the two servers with different access levels.
+bet10 host can be pinged, access telnet, web browsing, connects to video conferencing using their cisco telepony
+but can also be use for penetration testing via port 19.
 
+bet11 host has DNS service, secure web access, and can use ms teams. Also bet11 host are not pingable for security reasons.
+
+bet10: ping, telnet, http, sccp, chargen
+bet11: dns, https, SIP
+
+conf t
+no ip access-list extended CISCO1
+ip access-list extended CISCO1
+	permit icmp any host bet10.com
+	permit tcp any host bet10.com eq 23
+	permit tcp any host bet10.com eq 80
+	permit tcp any host bet10.com eq 2000
+	permit tcp any host bet10.com eq 19
+	permit tcp any host bet11.com eq 53
+	permit tcp any host bet11.com eq 443
+	permit tcp any host bet11.com eq 5060
+	
+int gi3
+	ip access-group CISCO1 in
+	end
+
+======
